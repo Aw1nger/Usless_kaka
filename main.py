@@ -1,54 +1,98 @@
-def split_text(input_file, page_size, lines_per_page, output_mode, page_range=None):
+def all_page(text, total_symbol, page_size, lines_per_page): 
+  '''Сохранение всех старниц
+     total_symbol -> колличество всех символов текста
+     page_size -> размер строки в странице 
+     lines_per_page -> число строк на странице
+  '''
+  for page_num in range(0, total_symbol // page_size // lines_per_page + 1) :
+    output_file = f'page_{page_num + 1}.txt'
+    page_content = text[page_num * page_size * lines_per_page : (page_num + 1) * page_size * lines_per_page]
+    # 1 * 40 * 5 = 200
+    print(page_content)
+    print(len(page_content))
+    with open(output_file, 'w', encoding='utf-8') as output:
+        output.write(page_content)
+        
+def even_page(text, total_symbol, page_size, lines_per_page): 
+    '''Сохранение всех четных старниц
+    total_symbol -> колличество всех символов текста
+    page_size -> размер строки в странице 
+    lines_per_page -> число строк на странице
+    '''
+    for page_num in range(1, total_symbol // page_size // lines_per_page + 1, 2) :
+        output_file = f'page_{page_num + 1}.txt'
+        page_content = text[page_num * page_size * lines_per_page : (page_num + 1) * page_size * lines_per_page]
+        # 1 * 40 * 5 = 200
+        print(page_content)
+        print(len(page_content))
+        with open(output_file, 'w', encoding='utf-8') as output:
+            output.write(page_content)
+            
+def odd_page(text, total_symbol, page_size, lines_per_page): 
+    '''Сохранение всех нечетных старниц
+    total_symbol -> колличество всех символов текста
+    page_size -> размер строки в странице 
+    lines_per_page -> число строк на странице
+    '''
+    for page_num in range(0, total_symbol // page_size // lines_per_page + 1, 2) :
+        output_file = f'page_{page_num + 1}.txt'
+        page_content = text[page_num * page_size * lines_per_page : (page_num + 1) * page_size * lines_per_page]
+        # 1 * 40 * 5 = 200
+        print(page_content)
+        print(len(page_content))
+        with open(output_file, 'w', encoding='utf-8') as output:
+            output.write(page_content)
+            
+def range_page(text, total_symbol, page_size, lines_per_page, page_range): 
+    '''Сохранение всех нечетных старниц
+    total_symbol -> колличество всех символов текста
+    page_size -> размер строки в странице 
+    lines_per_page -> число строк на странице
+    '''
+    for page_num in range(page_range[0] - 1, page_range[1]) :
+        output_file = f'page_{page_num + 1}.txt'
+        page_content = text[page_num * page_size * lines_per_page : (page_num + 1) * page_size * lines_per_page]
+        # 1 * 40 * 5 = 200
+        print(page_content)
+        print(len(page_content))
+        with open(output_file, 'w', encoding='utf-8') as output:
+            output.write(page_content)
+  
+def open_text(input_file):
     with open(input_file, 'r', encoding='utf-8') as file:
-        text = file.readlines()
+        text = file.read()
+        
+    print(text)
+    return text
 
-    total_lines = len(text)
-    total_pages = total_lines // lines_per_page + (1 if total_lines % lines_per_page > 0 else 0)
-
-    if page_range:
-        start_page, end_page = page_range
-        if start_page < 1 or end_page > total_pages or start_page > end_page:
-            print("Invalid page range.")
-            return
-    else:
-        start_page, end_page = 1, total_pages
-
-    for page_num in range(start_page, end_page + 1):
-        start_index = (page_num - 1) * lines_per_page
-        end_index = min(page_num * lines_per_page, total_lines)
-
-        page_content = ''.join(text[start_index:end_index])
-
-        if output_mode == 'all':
-            output_file = f'page_{page_num}.txt'
-            with open(output_file, 'w', encoding='utf-8') as output:
-                output.write(page_content)
-        elif output_mode == 'even' and page_num % 2 == 0:
-            output_file = f'page_{page_num}.txt'
-            with open(output_file, 'w', encoding='utf-8') as output:
-                output.write(page_content)
-        elif output_mode == 'odd' and page_num % 2 != 0:
-            output_file = f'page_{page_num}.txt'
-            with open(output_file, 'w', encoding='utf-8') as output:
-                output.write(page_content)
-        elif output_mode == 'range':
-            if start_page <= page_num <= end_page:
-                output_file = f'page_{page_num}.txt'
-                with open(output_file, 'w', encoding='utf-8') as output:
-                    output.write(page_content)
-
+def total_symbol(input_file):
+    with open(input_file, 'r', encoding='utf-8') as file:
+        text = file.read()
+        
+    print(len(text))
+    return len(text)
 
 if __name__ == "__main__":
     input_file = "input.txt"
-    page_size = 20  # Размер строки в странице
-    lines_per_page = 1  # Число строк на странице
+    page_size = int(input("Введите размер строки в странице >>>"))  # Размер строки в странице
+    lines_per_page = int(input("Введите число строк на странице >>>")) # Число строк на странице
 
-    # Выбор действия:
-    # 'all': сохранить все страницы
-    # 'even': сохранить все четные страницы
-    # 'odd': сохранить все нечетные страницы
-    # 'range': сохранить страницы из указанного диапазона
-    output_mode = 'all'
-    # page_range = (2, 3)  # Указать диапазон страниц для 'range' режима
+    output_mode = input("""
+Выбор действия:
+    'all': сохранить все страницы
+    'even': сохранить все четные страницы
+    'odd': сохранить все нечетные страницы
+    'range': сохранить страницы из указанного диапазона
+                        """)
 
-    split_text(input_file, page_size, lines_per_page, output_mode, )
+    if output_mode == 'all':
+        all_page(open_text(input_file), total_symbol(input_file), page_size, lines_per_page)
+    elif output_mode == 'even':
+        even_page(open_text(input_file), total_symbol(input_file), page_size, lines_per_page)
+    elif output_mode == 'odd':
+        odd_page(open_text(input_file), total_symbol(input_file), page_size, lines_per_page)
+    elif output_mode == 'range':
+        page_range = [1, 5]  # Указать диапазон страниц для 'range' режима
+        page_range[0] = int(input("Введите первую страницу диапазона >>>"))
+        page_range[1] = int(input("Введите последнюю страницу диапазона >>>"))
+        range_page(open_text(input_file), total_symbol(input_file), page_size, lines_per_page, page_range)
