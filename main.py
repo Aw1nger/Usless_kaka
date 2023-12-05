@@ -7,14 +7,14 @@ def open_text(input_file):
     with open(input_file, 'r', encoding='utf-8') as file:
         text = file.read()
         
-    print(text)
+    # print(text)
     return text
 
 def total_symbol(input_file):
     with open(input_file, 'r', encoding='utf-8') as file:
         text = file.read()
         
-    print(len(text))
+    # print(len(text))
     return len(text)
 
 def clicked():
@@ -86,7 +86,6 @@ def range_page():
     for page_num in range(page_range_start - 1, page_range_end) :
         output_file = f'page_{page_num + 1}.txt'
         page_content = text[page_num * page_size * lines_per_page : (page_num + 1) * page_size * lines_per_page]
-        # 1 * 40 * 5 = 200
         print(page_content)
         print(len(page_content))
         with open(output_file, 'w', encoding='utf-8') as output:
